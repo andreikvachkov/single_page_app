@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{%  static 'js/pagination.js'  %}"></script>
+    <script src="{%  static 'js/main.js'  %}">
+
+    </script>
+
+    <div>
+        <div id="table-posts" class="table-posts">
+            <table class="table" id="myTable">
+                <tbody>
+                    <tr>
+                        <th >Дата</th>
+                        <th>Название</th>
+                        <th>Количество</th>
+                        <th>Расстояние</th>
+                    </tr>
+                </tbody>
+                {% for record in model %}
+                    <tr >
+                        <td>{{ record.date }}</td>
+                        <td>{{ record.name }}</td>
+                        <td>{{ record.count }}</td>
+                        <td>{{ record.interval }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="filter">
+            <h2>Сортировка</h2>
+            <form action="" method="get">
+                {{ form.choice }}<br>
+                {{ form.criterion }}<br>
+                {{ form.choice_text }}<br>
+            </form>
+        </div>
+
+        <div class="list-pages">
+            <nav id="pagination" >
+                <ul class="pagination">
+                    {%  if model.has_previous %}
+                    <li class="page-num">
+                        <a class="page-link" href="{{ request.path }}?page={{ model.previous_page_number }}"><</a>
+                    </li>
+                    {% endif %}
+                    {% for i in model.paginator.page_range %}
+                        {% if model.number == i %}
+                        <li class="page-num">
+                            <a class="page-link" href="{{ request.path }}?page={{ i }}">{{ i }}</a>
+                        </li>
+                        {% else %}
+                        <li class="page-num">
+                            <a class="page-link" href="{{ request.path }}?page={{ i }}">{{ i }}</a>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if model.has_next %}
+                        <li class="page-num">
+                            <a class="page-link" href="{{ request.path }}?page={{ model.next_page_number }}">></a>
+                        </li>
+                    {% endif %}
+                </ul>
+
+            </nav>
+        </div>
+    </div>
+
+
+</body>
+</html>
